@@ -4,23 +4,23 @@ import "errors"
 
 // Stack 栈
 type Stack struct {
-    MaxTop int           // 栈最高
-    top    int           // 栈顶(当前栈高度)
-    array  [MAX]ElemType // 数组模拟栈
+    maxLength int           // 栈最高
+    top       int           // 栈顶(当前栈高度)
+    array     [MAX]ElemType // 数组模拟栈
 }
 
 // InitStack 初始化栈
 func InitStack() *Stack {
     stack := new(Stack)
     stack.top = -1
-    stack.MaxTop = MAX
+    stack.maxLength = MAX
     return stack
 }
 
 // Push 入栈
 func (stack *Stack) Push(value ElemType) error {
     // 栈满
-    if stack.top == stack.MaxTop-1 {
+    if stack.top == stack.maxLength-1 {
         return errors.New("栈满")
     }
     stack.top++
@@ -48,9 +48,10 @@ func (stack *Stack) List() ([]ElemType, error) {
 }
 
 // Length 栈长度
-func (stack *Stack)Length()int{
-    return stack.top
+func (stack *Stack) Length() int {
+    return stack.top + 1
 }
+
 // Clear 清空栈
 func (stack *Stack) Clear() error {
     if stack.top == -1 {
