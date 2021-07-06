@@ -36,14 +36,14 @@ func (list *List)InsertElem(location int, data *ElemType) error {
         return errors.New("线性表已满")
     }
     // 位置错误
-    if location < 1 || location > list.length+1 {
+    if location < 0 || location > list.length+1 {
         return errors.New("插入位置错误")
     }
     // 插入数据, 后面的数据向后延位
-    for j := list.length - 2; j >= location; j-- {
+    for j := list.length; j > location; j-- {
         list.num[j+1] = list.num[j]
     }
-    list.num[location-1] = *data
+    list.num[location] = *data
     list.length++
     return nil
 }
@@ -55,11 +55,11 @@ func (list *List)DeleteElem(location int) error {
         return errors.New("线性表为空")
     }
     // 位置错误
-    if location < 1 || location > list.length+1 {
+    if location < 0 || location > list.length-1 {
         return errors.New("删除位置错误")
     }
     // 删除数据, 后面的数据向前顺位
-    for j := location - 1; j < list.length; j++ {
+    for j := location; j < list.length; j++ {
         list.num[j] = list.num[j+1]
     }
     list.length--
@@ -89,10 +89,10 @@ func (list *List)EmptyList() bool {
 // GetElem 获取某位置的数据
 func (list *List)GetElem(location int) (ElemType, error) {
     // 没有该元素
-    if list.length < location-1 {
+    if list.length < location+1 {
         return 0, errors.New("没有该元素")
     }
-    return list.num[location-1], nil
+    return list.num[location], nil
 }
 
 // LocateElem 匹配某数据的位置
