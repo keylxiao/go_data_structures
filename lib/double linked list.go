@@ -22,7 +22,9 @@ func InitDoubleLinkedList() *DoubleLinkedList {
 }
 
 // AddElem 在双链表尾部添加一个节点
-func (list *DoubleLinkedList) AddElem(node *DoubleLinkedListNode) {
+func (list *DoubleLinkedList) AddElem(value ElemType) {
+    node := new(DoubleLinkedListNode)
+    node.data = value
     // 前方无节点
     if list.length == 0 {
         list.head = node
@@ -38,7 +40,9 @@ func (list *DoubleLinkedList) AddElem(node *DoubleLinkedListNode) {
 }
 
 // InsertElem 在双链表前方插入一个节点
-func (list *DoubleLinkedList) InsertElem(node *DoubleLinkedListNode) {
+func (list *DoubleLinkedList) InsertElem(value ElemType) {
+    node := new(DoubleLinkedListNode)
+    node.data = value
     oldNode := list.head
     oldNode.prev = node
     node.next = oldNode
@@ -47,7 +51,9 @@ func (list *DoubleLinkedList) InsertElem(node *DoubleLinkedListNode) {
 }
 
 // InsertLocationElem 在双链表某位置插入一个节点
-func (list *DoubleLinkedList) InsertLocationElem(location int, node *DoubleLinkedListNode) error {
+func (list *DoubleLinkedList) InsertLocationElem(location int, value ElemType) error {
+    node := new(DoubleLinkedListNode)
+    node.data = value
     // 不允许插入在头部以外、尾部以外
     if location > list.length || location < 0 {
         return errors.New("无法插入该位置")
