@@ -21,7 +21,9 @@ func InitSingleLinkedList() *SingleLinkedList {
 }
 
 // AddElem 在单链表尾部添加一个节点
-func (list *SingleLinkedList) AddElem(node *SingleLinkedListNode) {
+func (list *SingleLinkedList) AddElem(value ElemType) {
+    node := new(SingleLinkedListNode)
+    node.data = value
     // 前方无节点
     if list.length == 0 {
         list.head = node
@@ -36,14 +38,18 @@ func (list *SingleLinkedList) AddElem(node *SingleLinkedListNode) {
 }
 
 // InsertElem 在单链表前方插入一个节点
-func (list *SingleLinkedList) InsertElem(node *SingleLinkedListNode) {
+func (list *SingleLinkedList) InsertElem(value ElemType) {
+    node := new(SingleLinkedListNode)
+    node.data = value
     node.next = list.head
     list.head = node
     list.length++
 }
 
 // InsertLocationElem 在单链表某位置插入一个节点
-func (list *SingleLinkedList) InsertLocationElem(location int, node *SingleLinkedListNode) error {
+func (list *SingleLinkedList) InsertLocationElem(location int, value ElemType) error {
+    node := new(SingleLinkedListNode)
+    node.data = value
     // 不允许插入在头部以外、尾部以外
     if location > list.length || location < 0{
         return errors.New("无法插入该位置")
