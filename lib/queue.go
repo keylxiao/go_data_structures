@@ -6,7 +6,7 @@ import "errors"
 type Queue struct {
     maxLength int              // 队列最长
     end    int              // 队尾(当前栈高度)
-    list   SingleLinkedList // 单链表模拟队列
+    list   *SingleLinkedList // 单链表模拟队列
 }
 
 // InitQueue 初始化队列
@@ -14,6 +14,7 @@ func InitQueue() *Queue {
     queue := new(Queue)
     queue.maxLength = MAX
     queue.end = -1
+    queue.list = new(SingleLinkedList)
     return queue
 }
 
@@ -24,9 +25,7 @@ func (queue *Queue) Push(value ElemType) error {
         return errors.New("队列满")
     }
     queue.end++
-    node := new(*SingleLinkedListNode)
-    (*node).data = value
-    queue.list.AddElem(*node)
+    queue.list.AddElem(value)
     return nil
 }
 
