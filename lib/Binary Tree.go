@@ -11,8 +11,9 @@ type BinaryTree struct {
 }
 
 // InitBinaryTree 初始化二叉树
-func InitBinaryTree() *BinaryTree {
+func InitBinaryTree(value ElemType) *BinaryTree {
     tree := new(BinaryTree)
+    tree.value = value
     return tree
     //return new(BinaryTree)
 }
