@@ -8,12 +8,14 @@ import (
 type BinaryTree struct {
     value       ElemType    // 节点储存值
     left, right *BinaryTree // 左右子树
+    parent      *BinaryTree // 父节点
 }
 
 // InitBinaryTree 初始化二叉树
 func InitBinaryTree(value ElemType) *BinaryTree {
     tree := new(BinaryTree)
     tree.value = value
+    tree.parent = nil
     return tree
     //return new(BinaryTree)
 }
@@ -28,15 +30,76 @@ func (tree *BinaryTree) Insert(value ElemType) {
         if value > tree.value {
             if tree.right == nil {
                 tree.right = new(BinaryTree)
+                tree.right.parent = tree
             }
             tree.right.Insert(value)
         } else {
             if tree.left == nil {
                 tree.left = new(BinaryTree)
+                tree.left.parent = tree
             }
             tree.left.Insert(value)
         }
     }
+}
+
+// Delete 删除节点
+func (tree *BinaryTree) Delete(value ElemType) error {
+    node, err := tree.FindNode(value)
+    parent := node.parent
+    // 未找到该节点
+    if err != nil {
+        return err
+    }
+    // node为要删除的节点
+    // 左孩子为空
+    if node.left == nil {
+        // 父节点的孩子重新赋值
+        if parent.left == node {
+            parent.left = node.right
+        } else {
+            parent.right = node.right
+        }
+        // 更新子节点
+        node = node.right
+        node.parent = parent
+        return nil
+    }
+    // 右孩子为空
+    if node.right == nil {
+        // 父节点的孩子重新赋值
+        if parent.left == node {
+            parent.left = node.right
+        } else {
+            parent.right = node.right
+        }
+        // 更新子节点
+        node = node.left
+        node.parent = parent
+        return nil
+    }
+    // 左右孩子都不为空
+    // cur为右孩子的最左侧孩子设为新的节点
+    // 父节点的孩子重新赋值
+    cur := node.right
+    for cur.left != nil {
+        cur = cur.left
+    }
+    // 新节点与其左右孩子的处理
+    cur.left = node.left
+    cur.right = node.right
+    node.left.parent = cur
+    node.right.parent = cur
+    // 新节点原父节点的处理
+    cur.parent.left = nil
+    // 新节点与新父节点的处理
+    if parent.left == node{
+        parent.left = cur
+    }else{
+        parent.right = cur
+    }
+    cur.parent = parent
+    return nil
 }
 
 // Value 返回节点值
@@ -82,6 +145,11 @@ func (tree *BinaryTree) FindNode(value ElemType) (*BinaryTree, error) {
             return tree.left.FindNode(value)
         }
     }
+}
+
+// PreNode 前驱节点
+func (tree *BinaryTree) PreNode() *BinaryTree {
+    return tree.parent
 }
 
 // PreOrder 前序遍历
