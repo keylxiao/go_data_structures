@@ -31,28 +31,93 @@ func (tree *BalancedBinaryTree) InsertNode(value ElemType) {
         }
     } else { // 插入右子树
         // 无右子树
-        if tree.right == nil{
+        if tree.right == nil {
             tree.right = new(BalancedBinaryTree)
             tree.right.parent = tree
-        }else{
+        } else {
             tree.right.InsertNode(value)
         }
     }
     // LL型 右旋
-    if tree.BF() == 2{
+    if tree.BF() == 2 {
         // LR型 先左旋
-        if tree.left.BF() == -1{
+        if tree.left.BF() == -1 {
             tree.left.LeftRotate()
         }
         tree.RightRotate()
     }
     // RR型 左旋
-    if tree.BF() == -2{
+    if tree.BF() == -2 {
         // RL型 先右旋
-        if tree.right.BF() == 1{
+        if tree.right.BF() == 1 {
             tree.right.RightRotate()
         }
         tree.LeftRotate()
+    }
+}
+
+// Delete 删除
+// 1.被删除节点没有子节点直接删除
+// 2.被删除节点只有一个子节点, 子节点直接连至删除节点的父节点
+// 3.被删除节点有两个子节点, 用右子树的最小节点代替删除节点
+// 4.检查调整平衡
+func (tree *BalancedBinaryTree) Delete(value ElemType) error {
+    // node为只有一个节点存在时的赋值节点
+    node := new(BalancedBinaryTree)
+    // 空树
+    if tree == nil {
+        return errors.New("树为空")
+    }
+    // 寻找值
+    if value > tree.value {
+        return tree.right.Delete(value)
+    } else if value < tree.value {
+        return tree.left.Delete(value)
+    } else { // 有两个子节点
+        if tree.left != nil && tree.right != nil {
+            tree.value = tree.right.GetMin()
+            _ = tree.right.Delete(tree.value)
+        } else {                  // 有一个子节点
+            if tree.left != nil { // 只有左节点
+                node = tree.left
+            } else { // 只有右节点
+                node = tree.right
+            }
+            // 单节点的赋值
+            tree.value = node.value
+            tree.left = node.left
+            tree.right = node.right
+        }
+    }
+    // LL型 右旋
+    if tree.BF() == 2 {
+        // LR型 先左旋
+        if tree.left.BF() == -1 {
+            tree.left.LeftRotate()
+        }
+        tree.RightRotate()
+    }
+    // RR型 左旋
+    if tree.BF() == -2 {
+        // RL型 先右旋
+        if tree.right.BF() == 1 {
+            tree.right.RightRotate()
+        }
+        tree.LeftRotate()
+    }
+    return nil
+}
+
+// GetMin 获取树的最小节点值
+func (tree *BalancedBinaryTree) GetMin() ElemType {
+    if tree.left == nil && tree.right == nil {
+        return tree.value
+    } else if tree.left == nil {
+        return tree.right.GetMin()
+    } else if tree.right == nil {
+        return tree.left.GetMin()
+    } else {
+        return tree.left.GetMin()
     }
 }
 
