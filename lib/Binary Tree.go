@@ -88,7 +88,7 @@ func (tree *BinaryTree) Delete(value ElemType) error {
     }
     node.value = cur.value
     if !flag { // cur不是右子树唯一节点
-     cur.parent.left = nil
+            cur.parent.left = cur.right
     }else{
         cur.parent.right = nil
     }
