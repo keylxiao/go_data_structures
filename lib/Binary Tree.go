@@ -52,6 +52,14 @@ func (tree *BinaryTree) Delete(value ElemType) error {
         return err
     }
     // node为要删除的节点
+    if node.left == nil && node.right == nil{
+        if node.parent.left == node{
+            node.parent.left = nil
+        }else{
+            node.parent.right = nil
+        }
+        return nil
+    }
     // 左孩子为空
     if node.left == nil {
         // 父节点的孩子重新赋值
