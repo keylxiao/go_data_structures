@@ -80,25 +80,18 @@ func (tree *BinaryTree) Delete(value ElemType) error {
     }
     // 左右孩子都不为空
     // cur为右孩子的最左侧孩子设为新的节点
-    // 父节点的孩子重新赋值
     cur := node.right
+    var flag = true // 用于标识cur是否为右子树的唯一节点
     for cur.left != nil {
         cur = cur.left
+        flag = false
     }
-    // 新节点与其左右孩子的处理
-    cur.left = node.left
-    cur.right = node.right
-    node.left.parent = cur
-    node.right.parent = cur
-    // 新节点原父节点的处理
-    cur.parent.left = nil
-    // 新节点与新父节点的处理
-    if parent.left == node{
-        parent.left = cur
+    node.value = cur.value
+    if !flag { // cur不是右子树唯一节点
+     cur.parent.left = nil
     }else{
-        parent.right = cur
+        cur.parent.right = nil
     }
-    cur.parent = parent
     return nil
 }
 
