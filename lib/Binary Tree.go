@@ -203,3 +203,45 @@ func GrandBfs(tree *BinaryTree, level int, array *[][]ElemType) {
     GrandBfs(tree.left, level+1, array)
     GrandBfs(tree.right, level+1, array)
 }
+
+// PreOrderNew 前序遍历-值传递
+func PreOrderNew(root *BinaryTree)(res []ElemType) {
+    var preorder func(*BinaryTree)
+    preorder = func(node *BinaryTree) {
+        if node != nil {
+            res = append(res, node.value)
+            preorder(node.left)
+            preorder(node.right)
+        }
+    }
+    preorder(root)
+    return
+}
+
+// InOrderNew 中序遍历-值传递
+func InOrderNew(root *BinaryTree) (res []ElemType) {
+    var inorder func(*BinaryTree)
+    inorder = func(node *BinaryTree) {
+        if node != nil {
+            inorder(node.left)
+            res = append(res, node.value)
+            inorder(node.right)
+        }
+    }
+    inorder(root)
+    return
+}
+
+// PostOrderNew 后序遍历-值传递
+func PostOrderNew(root *BinaryTree)(res []ElemType) {
+    var postorder func(*BinaryTree)
+    postorder = func(node *BinaryTree) {
+        if node != nil {
+            postorder(node.left)
+            postorder(node.right)
+            res = append(res, node.value)
+        }
+    }
+    postorder(root)
+    return
+}
